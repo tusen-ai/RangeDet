@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import assigner
+import processing_cxx
 import numpy as np
 from numba import jit, njit
 
@@ -59,7 +59,7 @@ def inv_points_frequency(bbox_inds):
     :return: normalization_weight: (H * W)
     """
     # (H * W)
-    num_pts_in_bbox = assigner.get_point_num(
+    num_pts_in_bbox = processing_cxx.get_point_num(
         bbox_inds.astype(np.float32)).reshape(-1)
     normalization_weight = 1 / num_pts_in_bbox
     return normalization_weight

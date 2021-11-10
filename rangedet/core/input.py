@@ -3,7 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 import numpy as np
-import assigner
+import processing_cxx
 from utils.detection_input import DetectionAugmentation
 
 from rangedet.core.util_func import jit_class_aware_expand, sample_data
@@ -308,7 +308,7 @@ class Bbox3dAssigner(DetectionAugmentation):
         min_z = float(gt_bbox[:, :, 2].min())
         max_dist = 20.0
 
-        bbox_inds_each_pt = assigner.assign3D_v2(
+        bbox_inds_each_pt = processing_cxx.assign3D_v2(
             pc_vehicle_frame.reshape(-1, 3),
             gt_bbox.reshape(-1, 24),
             bbox_center.reshape(-1, 3),
@@ -430,7 +430,7 @@ class GenerateTarget(DetectionAugmentation):
 
     @staticmethod
     def get_normalization_weight(bbox_inds_each_pt):
-        pt_num_in_bbox = assigner.get_point_num(
+        pt_num_in_bbox = processing_cxx.get_point_num(
             bbox_inds_each_pt.reshape(-1).astype(np.float32)
         ).reshape(-1)
         normalization_weight = 1 / pt_num_in_bbox

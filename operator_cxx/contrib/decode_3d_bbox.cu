@@ -5,7 +5,7 @@
 */
 #include <stdio.h>
 #include "./decode_3d_bbox-inl.h"
-#include "../../common/cuda_utils.h"
+#include "cuda_utils.h"
 
 namespace mxnet {
 namespace op {

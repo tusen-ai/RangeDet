@@ -7,53 +7,6 @@
 namespace py = pybind11;
 using namespace Eigen;
 using namespace std;
-// #define DEBUG
-
-Matrix<int, Dynamic, Dynamic> get_bbox_inds(
-        const py::EigenDRef <MatrixXf> pc,
-        const py::EigenDRef <MatrixXf> bbox
-) {
-    auto num_pts = pc.rows();
-    auto num_bbox = bbox.rows();
-
-    Matrix<float, Dynamic, 3> A = bbox.block(0, 0, num_bbox, 3);
-    Matrix<float, Dynamic, 3> B = bbox.block(0, 3, num_bbox, 3);
-    Matrix<float, Dynamic, 3> C = bbox.block(0, 6, num_bbox, 3);
-    Matrix<float, Dynamic, 3> D = bbox.block(0, 9, num_bbox, 3);
-    Matrix<float, Dynamic, 3> E = bbox.block(0, 12, num_bbox, 3);
-    Matrix<int, Dynamic, 1> results = Matrix<int, Dynamic, 1>::Constant(num_pts, 1, -1);
-
-    for (int i = 0; i != num_pts; i++) {
-        Matrix<float, 1, 3> P = pc.row(i);
-        for (int j = 0; j != num_bbox; j++) {
-            Matrix<float, 1, 3> PB = P - B.row(j);
-
-            Matrix<float, 1, 3> AB = A.row(j) - B.row(j);
-            auto dot1 = PB(0) * AB(0) + PB(1) * AB(1) + PB(2) * AB(2);
-            auto mod_AB = AB(0) * AB(0) + AB(1) * AB(1) + AB(2) * AB(2);
-            if (dot1 < 0) continue;
-            if (dot1 >= mod_AB) continue;
-
-            Matrix<float, 1, 3> CB = C.row(j) - B.row(j);
-            auto dot2 = PB(0) * CB(0) + PB(1) * CB(1) + PB(2) * CB(2);
-            auto mod_CB = CB(0) * CB(0) + CB(1) * CB(1) + CB(2) * CB(2);
-            if (dot2 < 0) continue;
-            if (dot2 >= mod_CB) continue;
-
-            Matrix<float, 1, 3> PA = P - A.row(j);
-
-            Matrix<float, 1, 3> EA = E.row(j) - A.row(j);
-            auto dot3 = PA(0) * EA(0) + PA(1) * EA(1) + PA(2) * EA(2);
-            auto mod_EA = EA(0) * EA(0) + EA(1) * EA(1) + EA(2) * EA(2);
-            if (dot3 < 0) continue;
-            if (dot3 >= mod_EA) continue;
-
-            results(i) = j;
-            break;
-        }
-    }
-    return results;
-}
 
 Matrix<int, Dynamic, Dynamic> assign3D_v2(
         const py::EigenDRef <MatrixXf> pc,
@@ -155,9 +108,8 @@ Matrix<float, Dynamic, Dynamic> get_point_num(
     return results;
 }
 
-PYBIND11_MODULE(assigner, m
-){
-m.def("assign3D_v2", &assign3D_v2);
-m.def("get_bbox_inds", &get_bbox_inds);
-m.def("get_point_num", &get_point_num);
-}
+//PYBIND11_MODULE(assigner, m
+//){
+//m.def("assign3D_v2", &assign3D_v2);
+//m.def("get_point_num", &get_point_num);
+//}

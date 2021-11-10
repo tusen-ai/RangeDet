@@ -19,7 +19,7 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_FLAGS "-O3 -Wno-unused-result -Wno-logical-op-parentheses -fext-numeric-literals")
 
 #set(SOURCE_FILES preprocessing.cpp preprocessing.h overlap.cpp overlap.h polygon_overlap.cpp polygon_overlap.h refine.cpp refine.h)
-set(SOURCE_FILES overlap.cpp overlap.h)
+set(SOURCE_FILES overlap.cpp overlap.h assigner.h)
 
 set(PYTHON_EXECUTABLE /usr/bin/python)
 

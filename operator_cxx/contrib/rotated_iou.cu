@@ -6,7 +6,7 @@
 */
 #include <stdio.h>
 #include "./rotated_iou-inl.h"
-#include "../../common/cuda_utils.h"
+#include <cuda_utils.h>
 
 namespace mxnet {
 namespace op {

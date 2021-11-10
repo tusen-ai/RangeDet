@@ -5,7 +5,7 @@
 */
 #include "./decode_3d_bbox-inl.h"
 #include <dmlc/parameter.h>
-#include "../operator_common.h"
+#include "operator_common.h"
 
 namespace mxnet {
 namespace op {

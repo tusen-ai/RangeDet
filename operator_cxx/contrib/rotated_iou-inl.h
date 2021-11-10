@@ -10,10 +10,10 @@
 #include <mxnet/operator_util.h>
 #include <utility>
 #include <vector>
-#include "../mshadow_op.h"
-#include "../mxnet_op.h"
-#include "../operator_common.h"
-#include "../tensor/init_op.h"
+#include "mshadow_op.h"
+#include "mxnet_op.h"
+#include "operator_common.h"
+#include "tensor/init_op.h"
 
 namespace mxnet {
 namespace op {
@@ -500,7 +500,7 @@ struct RotateIoUKernelGPU {
     DType sb = box_b[3] * box_b[4] * box_b[5];
     if (sa < EPS || sb < EPS) return DType(0);
     DType s_overlap = box_overlap_xyzwlh(box_a, box_b);
-    DType h_overlap = MACRO_MAX(static_cast<DType>(0.0), 
+    DType h_overlap = MACRO_MAX(static_cast<DType>(0.0),
      MACRO_MIN(box_a[2] + box_a[5] / static_cast<DType>(2.0), box_b[2] + box_b[5] / static_cast<DType>(2.0))
      - MACRO_MAX(box_a[2] - box_a[5] / static_cast<DType>(2.0), box_b[2] - box_b[5] / static_cast<DType>(2.0)));
     return s_overlap * h_overlap / fmaxf(sa + sb - s_overlap * h_overlap, EPS);

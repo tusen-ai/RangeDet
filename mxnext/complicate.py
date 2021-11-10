@@ -4,7 +4,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import mxnet as mx
-from syncbn_customop import *
+# from syncbn_customop import *
 
 __all__ = ["normalizer_factory", "bn_count"]
 

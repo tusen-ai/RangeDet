@@ -1,5 +1,5 @@
 /*!
- * \file 
+ * \file
  * \brief decode 3d bbox
  * \author Lve Fan
  */
@@ -11,11 +11,11 @@
 #include <vector>
 #include <cmath>
 #include <iostream>
-#include "../mshadow_op.h"
-#include "../mxnet_op.h"
+#include "mshadow_op.h"
+#include "mxnet_op.h"
 #include <dmlc/parameter.h>
-#include "../operator_common.h"
-#include "../tensor/init_op.h"
+#include "operator_common.h"
+#include "tensor/init_op.h"
 
 namespace mxnet {
 namespace op {
@@ -135,7 +135,7 @@ struct Decode3DBboxBinKernelGPU {
     Point<DType> B(-0.5 * length, -0.5 * width);
     Point<DType> C(-0.5 * length, 0.5 * width);
     Point<DType> D(0.5 * length, 0.5 * width);
-    
+
     A.rotate(sin_yaw_laser, cos_yaw_laser);
     B.rotate(sin_yaw_laser, cos_yaw_laser);
     C.rotate(sin_yaw_laser, cos_yaw_laser);
@@ -245,7 +245,7 @@ struct Decode3DBboxKernelGPU {
     Point<DType> B(-0.5 * length, -0.5 * width);
     Point<DType> C(-0.5 * length, 0.5 * width);
     Point<DType> D(0.5 * length, 0.5 * width);
-    
+
     A.rotate(sin_yaw_laser, cos_yaw_laser);
     B.rotate(sin_yaw_laser, cos_yaw_laser);
     C.rotate(sin_yaw_laser, cos_yaw_laser);
@@ -306,4 +306,4 @@ void Decode3DBboxForward(const nnvm::NodeAttrs &attrs, const OpContext &ctx,
 }  // namespace op
 }  // namespace mxnet
 
-#endif 
+#endif

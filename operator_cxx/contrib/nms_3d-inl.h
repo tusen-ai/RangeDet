@@ -1,7 +1,7 @@
 /*!
- * \file 
- * \brief 
- * \author 
+ * \file
+ * \brief
+ * \author
 */
 #ifndef MXNET_OPERATOR_CONTRIB_NMS_3D_INL_H_
 #define MXNET_OPERATOR_CONTRIB_NMS_3D_INL_H_
@@ -9,10 +9,10 @@
 #include <vector>
 #include <utility>
 #include <mxnet/operator_util.h>
-#include "../mxnet_op.h"
-#include "../mshadow_op.h"
-#include "../tensor/init_op.h"
-#include "../operator_common.h"
+#include "mxnet_op.h"
+#include "mshadow_op.h"
+#include "tensor/init_op.h"
+#include "operator_common.h"
 
 namespace mxnet {
   typedef std::vector<mxnet::TShape> ShapeVector;
