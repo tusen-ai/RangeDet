@@ -138,9 +138,6 @@ python tools/train.py --config "/path/to/config/file.py"
 
 ### Multi-GPU training
 
-We use internally `mpirun` in order to launch multi-gpu training. This utility function from mpi spawns as many Python
-processes as the number of GPUs we want to use, and each Python process will only use a single GPU.
-
 ```bash
 ./scripts/horovodrun.sh 8 "python tools/train.py --config /path/to/config/file.py"
 ```
