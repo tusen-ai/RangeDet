@@ -6,9 +6,11 @@ This is the official implementation of **RangeDet** (ICCV 2021).
 
 ## TO DO
 
-* add installation instructions
-* add data augmentation
-* add full data training results
+* Add installation instructions
+* Add data augmentation
+* Add Pedestrian model setting
+* Add full data training results
+* Support KITTI dataset
 
 ## Introduction
 
