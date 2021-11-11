@@ -90,8 +90,8 @@ class DLABackboneBuilder(object):
 
             #  aggregation convolution
             norm = cls.param.normalizer
-            bn_mlp = norm(data=conv_mlp, name=name + "channel_wise_mlp_bn1")
-            relu_mlp = relu(data=bn_mlp, name=name + "channel_wise_mlp_relu1")
+            bn_mlp = norm(data=conv_mlp, name=name + "point_wise_mlp_bn1")
+            relu_mlp = relu(data=bn_mlp, name=name + "point_wise_mlp_relu1")
             conv1 = conv(relu_mlp, name=name + "aggregation_conv1", filter=filter, kernel=1)
             bn1 = norm(data=conv1, name=name + "aggregation_bn1")
             relu1 = relu(data=bn1, name=name + "aggregation_relu1")
