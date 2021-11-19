@@ -6,11 +6,11 @@ This is the official implementation of **RangeDet** (ICCV 2021).
 
 ## TO DO
 
-* Add installation instructions
-* Add data augmentation
-* Add Pedestrian model setting
-* Add full data training results
-* Support KITTI dataset
+- [x] Create range images on KITTI
+- [ ] Add installation instructions
+- [ ] Add data augmentation
+- [ ] Add Pedestrian model setting
+- [ ] Add full data training results
 
 ## Introduction
 
@@ -90,7 +90,7 @@ We will further add requirements and installation instructions on how to install
 
 [comment]: <> (## Pretrained Model)
 
-## Perform training on Waymo Open Dataset
+## Training on Waymo Open Dataset
 
 To train on the Waymo Open Dataset:
 
@@ -151,7 +151,17 @@ Note you don't need to change any config between single GPU training and multi-G
 
 To enable, just do Single-GPU or Multi-GPU training and set `General.fp16 = True` in the `config/*.py` file.
 
-## Evaluation
+## Create High-quality Range Images on KITTI
+We use Hough Transformation to obtain scanning parameters following [RCD](https://arxiv.org/abs/2005.09927). Based on the scanning parameters, it easy to create high-quality range images.
+
+To create range images on KITTI, just simply run:
+```
+python ./datasets/create_range_image_in_kitti.py --source-dir your_source_kitti_folder --target-dir your_save_directory
+
+```
+We assume that the source KITTI data is in MMDetection3D format. In other words, the folder `your_source_kitti_path` is supposed to contains `kitti_infos_trainval.pkl` and `kitti_infos_test.pkl`. It is easy to create these files following the instruction of [MMDetection3D](https://github.com/open-mmlab/mmdetection3d/blob/master/docs/datasets/kitti_det.md).
+
+## Evaluation on Waymo Open Dataset
 
 You can test your model on single gpus. Here is an example:
 
