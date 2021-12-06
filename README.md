@@ -9,7 +9,7 @@ This is the official implementation of **RangeDet** (ICCV 2021).
 - [x] Create range images on KITTI
 - [ ] Add installation instructions
 - [ ] Add data augmentation
-- [ ] Add Pedestrian model setting
+- [x] Add Pedestrian model setting
 - [ ] Add full data training results
 
 ## Introduction
