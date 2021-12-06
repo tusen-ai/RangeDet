@@ -71,7 +71,10 @@ Experiments were performed using uniformly sample 25% training data (∼40k fram
 
 Method | Train epoch | data size | w/wo aug | Overall LEVEL 1 3D-AP/APH on Vehicle (IoU=0.7) | Overall LEVEL 2 3D-AP/APH on Vehicle (IoU=0.7)
 --- | --- | --- | --- | --- | ---
-**rangedet_wo_aug_4_18e**  | 18 | 1/4 | no | **67.2/66.6** | **58.6/58.1** |
+**rangedet_veh_wo_aug_4_18e**  | 18 | 1/4 | no | **67.2/66.6** | **58.6/58.1** |
+**rangedet_ped_wo_aug_4_18e**  | 18 | 1/4 | no | **65.0/60.0** | **56.2/51.8** |
+**rangedet_veh_wo_aug_all_36e**  | 36 | 1/1 | no | **70.1/69.6** | **62.9/62.4** |
+**rangedet_ped_wo_aug_all_36e**  | 36 | 1/1 | no | **70.9/66.4** | **61.8/57.8** |
 
 We will further add the experiment results here, for now please refer to our overall performance on Waymo leaderboard in
 this [link](https://waymo.com/open/challenges/entry/?challenge=DETECTION_3D&emailId=5854f8ae-6285&timestamp=1610168529676138)
