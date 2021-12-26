@@ -1,3 +1,5 @@
+import ctypes
+_=ctypes.CDLL('./operator_cxx/contrib/contrib_cxx.so')
 import argparse
 import logging
 import pprint
