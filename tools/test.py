@@ -10,14 +10,14 @@ from threading import Thread
 import mxnet as mx
 import numpy as np
 import six.moves.cPickle as pkl
-from utils.detection_input import PostMergeBatchLoader as Loader
-from utils.detection_module import DetModule
 from processing_cxx import wnms_4c
 # from lidardet.processing_cxx import wnms_4c
-from utils.load_model import load_checkpoint
 from six.moves import reduce
 from six.moves.queue import Queue
 
+from utils.detection_input import PostMergeBatchLoader as Loader
+from utils.detection_module import DetModule
+from utils.load_model import load_checkpoint
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Test Detection')
@@ -38,6 +38,19 @@ def parse_args():
 #         if ts in seg_to_ts_dict[segname]:
 #             new_roidb.append(r)
 #     return new_roidb
+
+
+def bbox3d_12dim_to_8dim(bbox3d_12dim):
+    center_x = np.mean(bbox3d_12dim[:, [0, 2, 4, 6]], axis=1)
+    center_y = np.mean(bbox3d_12dim[:, [1, 3, 5, 7]], axis=1)
+    z0 = bbox3d_12dim[:, 9]
+    height = bbox3d_12dim[:, 10]
+    center_z = z0 + height / 2
+    length = np.sqrt((bbox3d_12dim[:, 2] - bbox3d_12dim[:, 0]) ** 2 + (bbox3d_12dim[:, 3] - bbox3d_12dim[:, 1]) ** 2)
+    width = np.sqrt((bbox3d_12dim[:, 2] - bbox3d_12dim[:, 4]) ** 2 + (bbox3d_12dim[:, 3] - bbox3d_12dim[:, 5]) ** 2)
+    heading = bbox3d_12dim[:, 8]
+    score = bbox3d_12dim[:, 11]
+    return np.stack([center_x, center_y, center_z, length, width, height, heading, score], axis=1)
 
 
 def bbox3d_10dim_to_11dim(bbox3d_10dim):
@@ -67,13 +80,6 @@ def bbox3d_10dim_to_11dim(bbox3d_10dim):
     )
     return bbox3d_11dim
 
-
-total_time = 0
-nms_time = 0
-pixel_pose_time = 0
-assign_time = 0
-trans_time = 0
-net_time = 0
 
 if __name__ == "__main__":
     os.environ["MXNET_CUDNN_AUTOTUNE_DEFAULT"] = "0"
@@ -166,7 +172,7 @@ if __name__ == "__main__":
     min_score = pTest.min_score
     output_dict = {1: {}, 2: {}, 3: {}}
     annotation_dict = {}
-    mapping = {'veh': 1, 'ped': 2, 'cyc': 4}
+    mapping = {'veh': 'TYPE_VEHICLE', 'ped': 'TYPE_PEDESTRIAN', 'cyc': 'TYPE_CYCLIST'}
     for idx in range(loader.total_record):
         if idx % 1000 == 0:
             print(f'{idx} records have been processed, a total of {loader.total_record} records')
@@ -211,11 +217,23 @@ if __name__ == "__main__":
             )
             final_bbox_score = np.array(final_bbox_score).reshape((-1, 12))
 
-        det_per_frame[mapping[pTest.class_names[0]]] = final_bbox_score
-        output_dict[rid] = {'det_4pts': det_per_frame, 'pc_url': roidb[rid]['pc_url']}
+        if final_bbox_score.shape[0] == 0:
+            continue
+
+        final_bbox_7pts_score = bbox3d_12dim_to_8dim(final_bbox_score)
+        det_per_frame[mapping[pTest.class_names[0]]] = final_bbox_7pts_score
+
+        pc_url = roidb[rid]['pc_url']
+        frame_name = pc_url.split('/')[-2].replace('segment-', '').replace('_with_camera_labels', '')
+        timestamp = int(pc_url.split('/')[-1][:-4])
+
+        output_dict[rid] = {
+            'det_xyzlwhyaws': det_per_frame,
+            'meta_info': {'name': frame_name, 'timestamp_micros': timestamp}}
         annotation_dict[rid] = gt_bbox
 
     with open(pTest.model.prefix + '_output_dict_{}e.pkl'.format(pTest.model.epoch), 'wb') as fw:
         pkl.dump(annotation_dict, fw)
         pkl.dump(output_dict, fw)
         print('Output dict has been saved!')
+
