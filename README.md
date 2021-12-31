@@ -176,7 +176,7 @@ You need to create a bin file so that you can use the official waymo evaluation 
 results.
 
 ```bash
-python tools/create_prediction_bin_3d.py --exp_path "/path/to/experiments" --config "config_file" -epoch num_epoch --save_bin_path "/path/to/save_bin_file"
+python tools/create_prediction_bin_3d.py --p "/path/to/experiments" --c "config_file" -e num_epoch --s "/path/to/save_bin_file"
 ```
 
 ## Acknowledgments
