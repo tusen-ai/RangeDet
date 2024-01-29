@@ -243,7 +243,7 @@ if __name__ == '__main__':
     data_splits = ['training', 'validation', 'test']
     source_dir = os.path.abspath(args.source_dir)
     target_dir = os.path.abspath(args.target_dir)
-    os.makedirs(target)
+    os.makedirs(target_dir)
     num_threads = args.num_threads
     for split in data_splits:
 
